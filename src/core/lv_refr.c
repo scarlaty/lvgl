@@ -7,6 +7,7 @@
  *      INCLUDES
  *********************/
 #include <stddef.h>
+#include <stdio.h>
 #include "lv_refr.h"
 #include "lv_disp.h"
 #include "../hal/lv_hal_tick.h"
@@ -610,7 +611,6 @@ static void refr_invalid_areas(void)
     for(i = 0; i < disp_refr->inv_p; i++) {
         /*Refresh the unjoined areas*/
         if(disp_refr->inv_area_joined[i] == 0) {
-
             if(i == last_i) disp_refr->driver->draw_buf->last_area = 1;
             disp_refr->driver->draw_buf->last_part = 0;
             refr_area(&disp_refr->inv_areas[i]);

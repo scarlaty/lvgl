@@ -307,6 +307,19 @@ static void draw_indic(lv_event_t * e)
         indic_length_calc = lv_area_get_height;
     }
 
+    /* Guard: range == 0 means min == max, nothing to draw */
+    if(range == 0) {
+        lv_obj_draw_part_dsc_t part_draw_dsc;
+        lv_obj_draw_dsc_init(&part_draw_dsc, draw_ctx);
+        part_draw_dsc.part = LV_PART_INDICATOR;
+        part_draw_dsc.class_p = MY_CLASS;
+        part_draw_dsc.type = LV_BAR_DRAW_PART_INDICATOR;
+        part_draw_dsc.draw_area = &bar->indic_area;
+        lv_event_send(obj, LV_EVENT_DRAW_PART_BEGIN, &part_draw_dsc);
+        lv_event_send(obj, LV_EVENT_DRAW_PART_END, &part_draw_dsc);
+        return;
+    }
+
     if(LV_BAR_IS_ANIMATING(bar->start_value_anim)) {
         lv_coord_t anim_start_value_start_x =
             (int32_t)((int32_t)anim_length * (bar->start_value_anim.anim_start - bar->min_value)) / range;
@@ -387,7 +400,6 @@ static void draw_indic(lv_event_t * e)
 
     /*Do not draw a zero length indicator but at least call the draw part events*/
     if(!sym && indic_length_calc(&bar->indic_area) <= 1) {
-
         lv_obj_draw_part_dsc_t part_draw_dsc;
         lv_obj_draw_dsc_init(&part_draw_dsc, draw_ctx);
         part_draw_dsc.part = LV_PART_INDICATOR;

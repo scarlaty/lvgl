@@ -56,6 +56,12 @@ typedef lv_mem_buf_t lv_mem_buf_arr_t[LV_MEM_BUF_MAX_NUM];
  **********************/
 
 /**
+ * Flush stderr/stdout and abort() — used by LV_ASSERT_HANDLER instead of while(1).
+ * Declared here so lv_assert.h (which includes lv_mem.h) can see it without stdio.h.
+ */
+void _lv_assert_crash(void);
+
+/**
  * Initialize the dyn_mem module (work memory and other variables)
  */
 void lv_mem_init(void);
